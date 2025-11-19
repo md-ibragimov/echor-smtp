@@ -32,7 +32,7 @@ pub async fn send_email_handler(
             StatusCode::OK,
             Json(EmailResponse {
                 success: true,
-                message: "Письмо успешно отправлено".to_string(),
+                message: "Письмо успешно отправлено.".to_string(),
             }),
         ),
         Err(e) => {
