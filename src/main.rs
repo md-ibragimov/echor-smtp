@@ -8,6 +8,7 @@ mod models;
 use crate::handlers::email::send_email_handler;
 use crate::handlers::health_check::health_check;
 use crate::models::app::AppState;
+use serde_email::Email;
 
 #[tokio::main]
 async fn main() {
@@ -16,7 +17,7 @@ async fn main() {
     let state = AppState {
         smtp_username: std::env::var("SMTP_USERNAME").expect("SMTP_USERNAME must be set"),
         smtp_password: std::env::var("SMTP_PASSWORD").expect("SMTP_PASSWORD must be set"),
-        from_email: std::env::var("FROM_EMAIL").expect("FROM_EMAIL must be set"),
+        from_email: Email::from_str(std::env::var("FROM_EMAIL").expect("FROM_EMAIL must be set")).expect("Convert str to email error"),
     };
 
     // Создание маршрута с защитой

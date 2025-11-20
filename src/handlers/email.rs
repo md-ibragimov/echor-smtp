@@ -90,6 +90,7 @@ async fn send_verification_email(
         .from(
             state
                 .from_email
+                .as_str()
                 .parse()
                 .map_err(|e| format!("Invalid from email: {}", e))?,
         )
