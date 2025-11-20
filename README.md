@@ -17,5 +17,5 @@ $ cargo test
 ```
 SMTP_USERNAME=<your email>
 SMTP_PASSWORD=<your google app key>
-FROM_EMAIL=<yout email>
+FROM_EMAIL=<your email>
 ```
