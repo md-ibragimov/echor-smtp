@@ -6,6 +6,7 @@ use lettre::{
     message::{MultiPart, SinglePart},
     transport::smtp::authentication::Credentials,
 };
+use serde_email::Email;
 
 use crate::models::app::AppState;
 use crate::models::email::EmailRequest;
@@ -16,7 +17,7 @@ pub async fn send_email_handler(
     Json(payload): Json<EmailRequest>,
 ) -> impl IntoResponse {
     // Email validation
-    if !payload.email.contains('@') {
+    if !payload.email.as_str().contains('@') {
         return (
             StatusCode::BAD_REQUEST,
             Json(EmailResponse {
@@ -50,7 +51,7 @@ pub async fn send_email_handler(
 
 // Sending email function
 async fn send_verification_email(
-    to_email: &str,
+    to_email: &Email,
     verification_code: &str,
     state: &AppState,
 ) -> Result<(), String> {
@@ -89,10 +90,12 @@ async fn send_verification_email(
         .from(
             state
                 .from_email
+                .as_str()
                 .parse()
                 .map_err(|e| format!("Invalid from email: {}", e))?,
         )
         .to(to_email
+            .as_str()
             .parse()
             .map_err(|e| format!("Invalid to email: {}", e))?)
         .subject("Your verification code")
